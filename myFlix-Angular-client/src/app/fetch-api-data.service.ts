@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 const apiUrl = 'https://camflixcf-73cf2f8e0ca3.herokuapp.com/';
 
@@ -27,10 +26,10 @@ export class FetchApiDataService {
   }
 
   // Get all movies endpoint
-  public getAllMovies(): Observable<any> {
-    return this.http.get(apiUrl + 'movies').pipe(
-      catchError(this.handleError)
-    );
+  getAllMovies(): Observable<any> {
+    const token = localStorage.getItem('token'); // Assuming you store JWT token in localStorage
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(apiUrl + 'movies', { headers });
   }
 
   // Get one movie endpoint
