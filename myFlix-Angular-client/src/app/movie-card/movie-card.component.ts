@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FetchApiDataService } from '../fetch-api-data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { GenreDialogComponent } from '../genre-dialog/genre-dialog.component';
+import { DirectorDialogComponent } from '../director-dialog/director-dialog.component';
+import { SynopsisDialogComponent } from '../synopsis-dialog/synopsis-dialog.component';
 
 @Component({
   selector: 'app-movie-card',
@@ -9,7 +13,10 @@ import { FetchApiDataService } from '../fetch-api-data.service';
 export class MovieCardComponent implements OnInit {
   movies: any[] = [];
 
-  constructor(private fetchApiData: FetchApiDataService) { }
+  constructor(
+    private fetchApiData: FetchApiDataService,
+    public dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     this.getMovies();
@@ -19,11 +26,42 @@ export class MovieCardComponent implements OnInit {
     this.fetchApiData.getAllMovies().subscribe(
       (resp: any) => {
         this.movies = resp;
-        console.log(this.movies);
       },
       (error: any) => {
         console.error(error);
       }
     );
+  }
+
+  openGenreDialog(genreData: any): void {
+    this.dialog.open(GenreDialogComponent, {
+      width: '300px',
+      data: genreData
+    });
+  }
+
+  openDirectorDialog(directorData: any): void {
+    this.dialog.open(DirectorDialogComponent, {
+      width: '300px',
+      data: directorData
+    });
+  }
+
+  openSynopsisDialog(movieData: any): void {
+    this.dialog.open(SynopsisDialogComponent, {
+      width: '400px',
+      data: {
+        title: movieData.Title,
+        description: movieData.Description
+      }
+    });
+  }
+
+  addToFavorites(movie: any): void {
+    // Add logic to add movie to favorites
+  }
+
+  openDetailsDialog(movie: any): void {
+    // Add logic to open movie details dialog
   }
 }
