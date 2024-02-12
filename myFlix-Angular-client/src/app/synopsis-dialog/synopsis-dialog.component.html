@@ -1,1 +1,8 @@
-<p>synopsis-dialog works!</p>
+<!DOCTYPE html>
+<h2 mat-dialog-title>Synopsis:</h2>
+<mat-card-content>
+  <p>{{ data.description }}</p>
+</mat-card-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true">Close</button>
+</mat-dialog-actions>

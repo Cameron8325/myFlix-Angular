@@ -20,10 +20,12 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component'
 import { RouterModule, Routes } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { GenreDialogComponent } from './genre-dialog/genre-dialog.component';
 import { DirectorDialogComponent } from './director-dialog/director-dialog.component';
-import { SynopsisDialogComponent } from './synopsis-dialog/synopsis-dialog.component'
+import { SynopsisDialogComponent } from './synopsis-dialog/synopsis-dialog.component';
+import { NavbarComponent } from './navbar/navbar.component'
 
 const appRoutes: Routes = [
   { path: 'welcome', component: WelcomePageComponent },
@@ -42,7 +44,8 @@ const appRoutes: Routes = [
     UserProfileComponent,
     GenreDialogComponent,
     DirectorDialogComponent,
-    SynopsisDialogComponent
+    SynopsisDialogComponent,
+    NavbarComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -58,7 +61,8 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatToolbarModule
   ],
   providers: [
     provideAnimationsAsync()

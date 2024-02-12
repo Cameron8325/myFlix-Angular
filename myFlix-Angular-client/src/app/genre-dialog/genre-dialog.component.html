@@ -1,4 +1,8 @@
 <!DOCTYPE html>
-<h2>{{ data.title }}</h2>
-<p>{{ data.description }}</p>
-
+<h2 mat-dialog-title>Genre: {{ data.Name }}</h2>
+<mat-card-content>
+  <p>{{ data.Description }}</p>
+</mat-card-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true">Close</button>
+</mat-dialog-actions>

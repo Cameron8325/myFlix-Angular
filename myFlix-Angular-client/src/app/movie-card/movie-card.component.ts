@@ -60,8 +60,4 @@ export class MovieCardComponent implements OnInit {
   addToFavorites(movie: any): void {
     // Add logic to add movie to favorites
   }
-
-  openDetailsDialog(movie: any): void {
-    // Add logic to open movie details dialog
-  }
 }

@@ -1,10 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-director-dialog',
   templateUrl: './director-dialog.component.html',
-  styleUrl: './director-dialog.component.scss'
+  styleUrls: ['./director-dialog.component.scss']
 })
 export class DirectorDialogComponent {
-
+  constructor(
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      Name: string;
+      Description: string;
+    }
+  ) {}
 }
