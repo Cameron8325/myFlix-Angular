@@ -55,10 +55,13 @@ export class FetchApiDataService {
 
   // Get user endpoint
   public getUser(username: string): Observable<any> {
-    return this.http.get(apiUrl + 'users/' + username).pipe(
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(apiUrl + 'users/' + username, { headers }).pipe(
       catchError(this.handleError)
     );
   }
+  
 
   // Get favorite movies for a user endpoint
   public getFavoriteMovies(username: string): Observable<any> {

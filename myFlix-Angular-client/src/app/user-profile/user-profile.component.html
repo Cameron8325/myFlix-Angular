@@ -1,16 +1,46 @@
-<!DOCTYPE html>
-<div *ngIf="user">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>User Profile</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Username: {{ user.Username }}</p>
-      <p>Email: {{ user.Email }}</p>
-      <!-- Add more fields as needed -->
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button color="primary">Edit Profile</button>
-    </mat-card-actions>
-  </mat-card>
+<app-navbar></app-navbar>
+<div class="profile-container">
+  <h2>User Profile</h2>
+
+  <div class="user-info-section">
+    <h3>User Information</h3>
+    <mat-form-field appearance="fill">
+      <mat-label>Username</mat-label>
+      <input matInput type="text" id="username" [(ngModel)]="userData.Username" [placeholder]="userData.Username">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" id="email" [(ngModel)]="userData.Email" [placeholder]="userData.Email">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Birthday</mat-label>
+      <input matInput type="date" id="birthday" [(ngModel)]="userData.Birthday" [placeholder]="userData.Birthday">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" id="password" [(ngModel)]="userData.Password" placeholder="New Password">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="updateUserData()">Update Information</button>
+  </div>
+
+  <div class="favorites-section">
+    <h3>Favorites</h3>
+    <div *ngIf="favoriteMovies.length === 0">
+      <p>No favorite movies added yet.</p>
+    </div>
+    <div *ngFor="let movieId of favoriteMovies">
+      <!-- Display movie information here based on movieId -->
+      <button mat-raised-button color="warn" (click)="unfavoriteMovie(movieId)">Remove from Favorites</button>
+    </div>
+  </div>
+
+  <div class="delete-account-section">
+    <h3>Delete Account</h3>
+    <p>Warning: This action cannot be undone.</p>
+    <button mat-raised-button color="warn" (click)="deleteAccount()">Delete Account</button>
+  </div>
 </div>
