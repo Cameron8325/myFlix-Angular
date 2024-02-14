@@ -35,8 +35,8 @@ export class UserProfileComponent implements OnInit {
   getFavoriteMovies(): void {
     const username = localStorage.getItem('username');
     if (username) {
-      this.fetchApiData.getFavoriteMovies(username).subscribe((response: any) => {
-        this.favoriteMovies = response.FavoriteMovies;
+      this.fetchApiData.getUser(username).subscribe((response: any) => {
+        this.favoriteMovies = response.FavoriteMovies.map((movie: any) => movie.$oid);
       });
     }
   }

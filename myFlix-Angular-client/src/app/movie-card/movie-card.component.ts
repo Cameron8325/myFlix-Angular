@@ -12,6 +12,7 @@ import { SynopsisDialogComponent } from '../synopsis-dialog/synopsis-dialog.comp
 })
 export class MovieCardComponent implements OnInit {
   movies: any[] = [];
+  loggedInUser: any;
 
   constructor(
     private fetchApiData: FetchApiDataService,
@@ -19,6 +20,7 @@ export class MovieCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loggedInUser = JSON.parse(localStorage.getItem('user') || '{}');
     this.getMovies();
   }
 
@@ -58,6 +60,27 @@ export class MovieCardComponent implements OnInit {
   }
 
   addToFavorites(movie: any): void {
-    // Add logic to add movie to favorites
+    const index = this.loggedInUser.FavoriteMovies.findIndex((favMovie: any) => favMovie === movie._id);
+    if (index === -1) {
+      // Movie not in favorites, add it
+      this.fetchApiData.addMovieToFavorites(this.loggedInUser.Username, movie._id).subscribe((resp: any) => {
+        console.log('Movie added to favorites:', resp);
+        this.loggedInUser.FavoriteMovies.push(movie._id);
+        localStorage.setItem('user', JSON.stringify(this.loggedInUser));
+      });
+    } else {
+      // Movie already in favorites, remove it
+      this.fetchApiData.deleteMovieFromFavorites(this.loggedInUser.Username, movie._id).subscribe((resp: any) => {
+        console.log('Movie removed from favorites:', resp);
+        this.loggedInUser.FavoriteMovies.splice(index, 1);
+        localStorage.setItem('user', JSON.stringify(this.loggedInUser));
+      });
+    }
   }
+
+  isFavorite(movieId: string): boolean {
+    return this.loggedInUser.FavoriteMovies.includes(movieId);
+  }
+  
+  
 }
