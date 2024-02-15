@@ -2,6 +2,7 @@
 <app-navbar></app-navbar>
 
 <div *ngIf="user" class="user-profile">
+  <!-- User Information section -->
   <div class="profile-section">
     <h2>User Information</h2>
     <div *ngIf="!isEditing">
@@ -28,15 +29,25 @@
     </div>
   </div>
 
+  <!-- Favorite Movies section -->
   <div class="profile-section">
     <h2>Favorite Movies</h2>
-    <div *ngIf="favoriteMovies.length > 0; else noFavorites">
+    <div *ngIf="favoriteMovies.length > 0; else noFavorites" class="scrollable-list">
       <div *ngFor="let movie of favoriteMovies" class="favorite-movie">
-        <img [src]="movie.ImageUrl" [alt]="movie.Title">
-        <p>{{ movie.Title }}</p>
-        <button mat-icon-button color="warn" (click)="removeFromFavorites(movie._id)">
-          <mat-icon>delete</mat-icon>
-        </button>
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar>
+              <img [src]="movie.ImageUrl" [alt]="movie.Title">
+            </div>
+            <mat-card-title>{{ movie.Title }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-actions>
+            <!-- Add your action buttons here -->
+            <button mat-icon-button color="warn" (click)="removeFromFavorites(movie._id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
       </div>
     </div>
     <ng-template #noFavorites>
@@ -44,6 +55,7 @@
     </ng-template>
   </div>
 
+  <!-- Delete Account section -->
   <div class="profile-section">
     <h2>Delete Account</h2>
     <p>Deleting your account is permanent. Are you sure you want to proceed?</p>
