@@ -123,8 +123,27 @@ export class UserProfileComponent implements OnInit {
     if (!this.isEditing) {
       // Reset updatedUserData if not editing
       this.updatedUserData = { ...this.user };
+    } else {
+      // Clear password field when editing starts
+      this.updatedUserData.Password = '';
+  
+      // Format the birthday for editing
+      if (this.user && this.user.Birthday) {
+        const userBirthday = new Date(this.user.Birthday);
+        const year = userBirthday.getFullYear();
+        let month: string | number = userBirthday.getMonth() + 1;
+        if (month < 10) {
+          month = '0' + month;
+        }
+        let day: string | number = userBirthday.getDate();
+        if (day < 10) {
+          day = '0' + day;
+        }
+        this.updatedUserData.Birthday = `${year}-${month}-${day}`;
+      }
     }
   }
+  
 
   removeFromFavorites(movieId: string): void {
     const username = this.user.Username;
