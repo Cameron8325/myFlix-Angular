@@ -64,11 +64,10 @@ export class FetchApiDataService {
   
 
   // Get favorite movies for a user endpoint
-  // Get favorite movies for a user endpoint
   public getFavoriteMovies(username: string): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get(apiUrl + 'users/' + username + '/movies', { headers }).pipe(
+    return this.http.get(apiUrl + 'users/' + username + '/favorite-movies', { headers }).pipe(
       catchError(this.handleError)
     );
   }

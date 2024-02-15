@@ -1,53 +1,52 @@
+<!DOCTYPE html>
 <app-navbar></app-navbar>
-<div class="profile-container">
-  <h2>User Profile</h2>
 
-  <div class="user-info-section">
-    <h3>User Information</h3>
-    <mat-form-field appearance="fill">
-      <mat-label>Username</mat-label>
-      <input matInput type="text" id="username" [(ngModel)]="userData.Username" [placeholder]="userData.Username">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input matInput type="email" id="email" [(ngModel)]="userData.Email" [placeholder]="userData.Email">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Birthday</mat-label>
-      <input matInput type="date" id="birthday" [(ngModel)]="userData.Birthday" [placeholder]="userData.Birthday">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input matInput type="password" id="password" [(ngModel)]="userData.Password" placeholder="New Password">
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" (click)="updateUserData()">Update Information</button>
-  </div>
-
-  <div class="favorites-section">
-    <h3>Favorites</h3>
-    <div *ngIf="favoriteMovies.length === 0">
-      <p>No favorite movies added yet.</p>
+<div *ngIf="user" class="user-profile">
+  <div class="profile-section">
+    <h2>User Information</h2>
+    <div *ngIf="!isEditing">
+      <p><strong>Username:</strong> {{ user.Username }}</p>
+      <p><strong>Email:</strong> {{ user.Email }}</p>
+      <p><strong>Birthday:</strong> {{ user.Birthday | date }}</p>
+      <button mat-raised-button color="primary" (click)="toggleEdit()">Edit</button>
     </div>
-    <div *ngFor="let movie of favoriteMovies">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>{{ movie.Title }}</mat-card-title>
-        </mat-card-header>
-        <img mat-card-image [src]="movie.ImageUrl" alt="{{ movie.Title }}">
-        <mat-card-actions>
-          <button mat-button color="warn" (click)="unfavoriteMovie(movie._id)">Remove from Favorites</button>
-        </mat-card-actions>
-      </mat-card>
+    <div *ngIf="isEditing">
+      <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="updatedUserData.Username" type="text">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="updatedUserData.Email" type="email">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Birthday</mat-label>
+        <input matInput [(ngModel)]="updatedUserData.Birthday" type="date">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="updateUserData()">Save</button>
+      <button mat-raised-button color="warn" (click)="toggleEdit()">Cancel</button>
     </div>
   </div>
 
-  <div class="delete-account-section">
-    <h3>Delete Account</h3>
-    <p>Warning: This action cannot be undone.</p>
-    <button mat-raised-button color="warn" (click)="deleteAccount()">Delete Account</button>
+  <div class="profile-section">
+    <h2>Favorite Movies</h2>
+    <div *ngIf="favoriteMovies.length > 0; else noFavorites">
+      <div *ngFor="let movie of favoriteMovies" class="favorite-movie">
+        <img [src]="movie.ImageUrl" [alt]="movie.Title">
+        <p>{{ movie.Title }}</p>
+        <button mat-icon-button color="warn" (click)="removeFromFavorites(movie._id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    <ng-template #noFavorites>
+      <p>No favorite movies found.</p>
+    </ng-template>
+  </div>
+
+  <div class="profile-section">
+    <h2>Delete Account</h2>
+    <p>Deleting your account is permanent. Are you sure you want to proceed?</p>
+    <button mat-raised-button color="warn" (click)="deleteUser()">Delete Account</button>
   </div>
 </div>

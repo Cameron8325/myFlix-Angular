@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FetchApiDataService } from '../fetch-api-data.service';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -9,14 +9,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
-  userData: any = {};
+  user: any;
+  updatedUserData: any = {};
   favoriteMovies: any[] = [];
+  newPassword: string = '';
+  confirmPassword: string = '';
+  isEditing: boolean = false;
 
   constructor(
-    public fetchApiData: FetchApiDataService,
-    public dialog: MatDialog,
-    public snackBar: MatSnackBar
-  ) {}
+    private fetchApiData: FetchApiDataService,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.getUserData();
@@ -24,70 +28,99 @@ export class UserProfileComponent implements OnInit {
   }
 
   getUserData(): void {
-    const username = localStorage.getItem('username');
-    if (username) {
-      this.fetchApiData.getUser(username).subscribe((response: any) => {
-        this.userData = response;
-      });
-    }
+    const username = JSON.parse(localStorage.getItem('user') || '{}').Username;
+    this.fetchApiData.getUser(username).subscribe(
+      (response: any) => {
+        this.user = response;
+        this.updatedUserData = { ...this.user };
+      },
+      (error: any) => {
+        console.error(error);
+        this.snackBar.open('Failed to retrieve user data', 'OK', {
+          duration: 2000
+        });
+      }
+    );
   }
 
   getFavoriteMovies(): void {
-    const username = localStorage.getItem('username');
-    if (username) {
-      this.fetchApiData.getUser(username).subscribe((response: any) => {
-        this.favoriteMovies = response.FavoriteMovies.map((movie: any) => movie.$oid);
-      });
-    }
+    const username = JSON.parse(localStorage.getItem('user') || '{}').Username;
+    this.fetchApiData.getFavoriteMovies(username).subscribe(
+      (response: any) => {
+        this.favoriteMovies = response;
+      },
+      (error: any) => {
+        console.error(error);
+        this.snackBar.open('Failed to retrieve favorite movies', 'OK', {
+          duration: 2000
+        });
+      }
+    );
   }
 
   updateUserData(): void {
-    const username = localStorage.getItem('username');
-    if (username) {
-      this.fetchApiData.editUser(username, this.userData).subscribe(() => {
-        this.snackBar.open('User information updated successfully!', 'OK', {
+    this.fetchApiData.editUser(this.user.Username, this.updatedUserData).subscribe(
+      (response: any) => {
+        this.user = { ...this.updatedUserData };
+        this.isEditing = false;
+        this.snackBar.open('User data updated successfully', 'OK', {
           duration: 2000
         });
-      }, error => {
+      },
+      (error: any) => {
         console.error(error);
-        this.snackBar.open('Failed to update user information. Please try again.', 'OK', {
+        this.snackBar.open('Failed to update user data', 'OK', {
           duration: 2000
         });
-      });
-    }
+      }
+    );
   }
 
-  deleteAccount(): void {
-    const username = localStorage.getItem('username');
-    if (username) {
-      this.fetchApiData.deleteUser(username).subscribe(() => {
+  deleteUser(): void {
+    const username = this.user.Username;
+    this.fetchApiData.deleteUser(username).subscribe(
+      () => {
         localStorage.clear();
-        this.snackBar.open('Account deleted successfully!', 'OK', {
+        this.router.navigate(['/welcome']);
+        this.snackBar.open('Account deleted successfully', 'OK', {
           duration: 2000
         });
-      }, error => {
+      },
+      (error: any) => {
         console.error(error);
-        this.snackBar.open('Failed to delete account. Please try again.', 'OK', {
+        this.snackBar.open('Failed to delete user account', 'OK', {
           duration: 2000
         });
-      });
+      }
+    );
+  }
+
+  toggleEdit(): void {
+    this.isEditing = !this.isEditing;
+    if (!this.isEditing) {
+      // Reset updatedUserData if not editing
+      this.updatedUserData = { ...this.user };
     }
   }
 
-  unfavoriteMovie(movieId: string): void {
-    const username = localStorage.getItem('username');
-    if (username) {
-      this.fetchApiData.deleteMovieFromFavorites(username, movieId).subscribe(() => {
-        this.snackBar.open('Movie removed from favorites successfully!', 'OK', {
-          duration: 2000
-        });
-        this.getFavoriteMovies();
-      }, error => {
+  removeFromFavorites(movieId: string): void {
+    const username = this.user.Username;
+    this.fetchApiData.deleteMovieFromFavorites(username, movieId).subscribe(
+      () => {
+        const index = this.favoriteMovies.findIndex(movie => movie._id === movieId);
+        if (index !== -1) {
+          this.favoriteMovies.splice(index, 1);
+          this.snackBar.open('Movie removed from favorites', 'OK', {
+            duration: 2000
+          });
+        }
+      },
+      (error: any) => {
         console.error(error);
-        this.snackBar.open('Failed to remove movie from favorites. Please try again.', 'OK', {
+        this.snackBar.open('Failed to remove movie from favorites', 'OK', {
           duration: 2000
         });
-      });
-    }
+      }
+    );
   }
 }
