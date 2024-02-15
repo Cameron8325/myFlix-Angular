@@ -58,20 +58,43 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+
   updateUserData(): void {
-    this.fetchApiData.editUser(this.user.Username, this.updatedUserData).subscribe(
+    // Create an object to hold the updated user data
+    const updatedData: any = {};
+
+    // Check if the user has entered new values for username, email, and birthday
+    // If yes, assign those values to the updatedData object
+    if (this.updatedUserData.Username) {
+      updatedData.Username = this.updatedUserData.Username;
+    }
+    if (this.updatedUserData.Email) {
+      updatedData.Email = this.updatedUserData.Email;
+    }
+    if (this.updatedUserData.Birthday) {
+      updatedData.Birthday = this.updatedUserData.Birthday;
+    }
+    if (this.updatedUserData.Password) {
+      updatedData.Password = this.updatedUserData.Password;
+    }
+
+    // If the updatedData object is empty, do not make any API call
+    if (Object.keys(updatedData).length === 0) {
+      this.snackBar.open('No changes to save', 'OK', { duration: 2000 });
+      return;
+    }
+
+    // Call the API to update user data with the updatedData object
+    this.fetchApiData.editUser(this.user.Username, updatedData).subscribe(
       (response: any) => {
-        this.user = { ...this.updatedUserData };
+        // Update user data in the component if the API call is successful
+        this.user = { ...this.user, ...updatedData };
         this.isEditing = false;
-        this.snackBar.open('User data updated successfully', 'OK', {
-          duration: 2000
-        });
+        this.snackBar.open('User data updated successfully', 'OK', { duration: 2000 });
       },
       (error: any) => {
         console.error(error);
-        this.snackBar.open('Failed to update user data', 'OK', {
-          duration: 2000
-        });
+        this.snackBar.open('Failed to update user data', 'OK', { duration: 2000 });
       }
     );
   }

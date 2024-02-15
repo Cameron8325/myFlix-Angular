@@ -24,6 +24,10 @@
         <mat-label>Birthday</mat-label>
         <input matInput [(ngModel)]="updatedUserData.Birthday" type="date">
       </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="updatedUserData.Password" type="password" placeholder="">
+      </mat-form-field>
       <button mat-raised-button color="primary" (click)="updateUserData()">Save</button>
       <button mat-raised-button color="warn" (click)="toggleEdit()">Cancel</button>
     </div>
