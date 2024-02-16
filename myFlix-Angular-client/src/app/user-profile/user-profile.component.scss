@@ -1,4 +1,37 @@
-.scrollable-list {
-  max-height: 400px; // Set the maximum height of the scrollable list
-  overflow-y: auto; // Enable vertical scrolling if content overflows
+.user-profile {
+  .profile-section {
+    margin-bottom: 20px;
+  }
+
+  .movie-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .movie-card {
+      width: 300px;
+      margin: 10px;
+
+      mat-card {
+        width: 100%;
+      }
+
+      mat-card-header {
+        justify-content: center;
+      }
+
+      mat-card-title {
+        text-align: center;
+      }
+
+      mat-card-actions {
+        justify-content: center;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
 }

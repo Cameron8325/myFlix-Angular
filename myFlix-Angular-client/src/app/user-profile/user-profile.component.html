@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <app-navbar></app-navbar>
 
 <div *ngIf="user" class="user-profile">
@@ -34,30 +33,32 @@
   </div>
 
   <!-- Favorite Movies section -->
-  <div class="profile-section">
-    <h2>Favorite Movies</h2>
-    <div *ngIf="favoriteMovies.length > 0; else noFavorites" class="scrollable-list">
-      <div *ngFor="let movie of favoriteMovies" class="favorite-movie">
-        <mat-card>
-          <mat-card-header>
-            <div mat-card-avatar>
-              <img [src]="movie.ImageUrl" [alt]="movie.Title">
-            </div>
-            <mat-card-title>{{ movie.Title }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-actions>
-            <!-- Add your action buttons here -->
-            <button mat-icon-button color="warn" (click)="removeFromFavorites(movie._id)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-    </div>
-    <ng-template #noFavorites>
-      <p>No favorite movies found.</p>
-    </ng-template>
+  <div *ngIf="favoriteMovies.length > 0; else noFavorites" class="movie-container">
+    <mat-card *ngFor="let movie of favoriteMovies" class="movie-card">
+      <mat-card-header>
+        <mat-card-title>{{ movie.Title }}</mat-card-title>
+      </mat-card-header>
+      <img [src]="movie.ImageUrl" [alt]="movie.Title" class="movie-image" />
+
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="openGenreDialog(movie.Genre)">
+          Genre
+        </button>
+        <button mat-button color="primary" (click)="openDirectorDialog(movie.Director)">
+          Director
+        </button>
+        <button mat-button color="primary" (click)="openSynopsisDialog(movie)">
+          Synopsis
+        </button>
+        <button mat-icon-button color="primary" (click)="addToFavorites(movie)">
+          <mat-icon>{{ isFavorite(movie._id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
   </div>
+  <ng-template #noFavorites>
+    <p>No favorite movies found.</p>
+  </ng-template>
 
   <!-- Delete Account section -->
   <div class="profile-section">

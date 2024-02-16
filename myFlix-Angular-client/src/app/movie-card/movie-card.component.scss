@@ -1,0 +1,15 @@
+.movie-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.movie-card {
+  width: 300px;
+  margin: 10px;
+}
+
+.movie-image {
+  width: 100%;
+  height: auto;
+}

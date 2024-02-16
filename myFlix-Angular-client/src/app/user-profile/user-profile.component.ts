@@ -2,6 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FetchApiDataService } from '../fetch-api-data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+
+import { GenreDialogComponent } from '../genre-dialog/genre-dialog.component';
+import { DirectorDialogComponent } from '../director-dialog/director-dialog.component';
+import { SynopsisDialogComponent } from '../synopsis-dialog/synopsis-dialog.component';
+
+
 
 @Component({
   selector: 'app-user-profile',
@@ -19,7 +26,8 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private fetchApiData: FetchApiDataService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -57,7 +65,6 @@ export class UserProfileComponent implements OnInit {
       }
     );
   }
-
 
   updateUserData(): void {
     // Create an object to hold the updated user data
@@ -144,25 +151,58 @@ export class UserProfileComponent implements OnInit {
     }
   }
   
-
-  removeFromFavorites(movieId: string): void {
-    const username = this.user.Username;
-    this.fetchApiData.deleteMovieFromFavorites(username, movieId).subscribe(
-      () => {
-        const index = this.favoriteMovies.findIndex(movie => movie._id === movieId);
-        if (index !== -1) {
-          this.favoriteMovies.splice(index, 1);
-          this.snackBar.open('Movie removed from favorites', 'OK', {
-            duration: 2000
-          });
-        }
-      },
-      (error: any) => {
+  addToFavorites(movie: any): void {
+    const index = this.favoriteMovies.findIndex((favMovie: any) => favMovie._id === movie._id);
+    if (index === -1) {
+      // Movie not in favorites, add it
+      this.fetchApiData.addMovieToFavorites(this.user.Username, movie._id).subscribe((resp: any) => {
+        console.log('Movie added to favorites:', resp);
+        this.favoriteMovies.push(movie);
+        this.snackBar.open('Movie added to favorites', 'OK', { duration: 2000 });
+      }, (error: any) => {
         console.error(error);
-        this.snackBar.open('Failed to remove movie from favorites', 'OK', {
-          duration: 2000
-        });
-      }
-    );
+        this.snackBar.open('Failed to add movie to favorites', 'OK', { duration: 2000 });
+      });
+    } else {
+      // Movie already in favorites, remove it
+      const movieId = movie._id;
+      this.fetchApiData.deleteMovieFromFavorites(this.user.Username, movieId).subscribe((resp: any) => {
+        console.log('Movie removed from favorites:', resp);
+        this.favoriteMovies = this.favoriteMovies.filter((favMovie: any) => favMovie._id !== movieId);
+        this.snackBar.open('Movie removed from favorites', 'OK', { duration: 2000 });
+      }, (error: any) => {
+        console.error(error);
+        this.snackBar.open('Failed to remove movie from favorites', 'OK', { duration: 2000 });
+      });
+    }
   }
+
+  openGenreDialog(genreData: any): void {
+    this.dialog.open(GenreDialogComponent, {
+      width: '300px',
+      data: genreData
+    });
+  }
+
+  openDirectorDialog(directorData: any): void {
+    this.dialog.open(DirectorDialogComponent, {
+      width: '300px',
+      data: directorData
+    });
+  }
+
+  openSynopsisDialog(movieData: any): void {
+    this.dialog.open(SynopsisDialogComponent, {
+      width: '400px',
+      data: {
+        title: movieData.Title,
+        description: movieData.Description
+      }
+    });
+  }
+
+  isFavorite(movieId: string): boolean {
+    return this.favoriteMovies.some(movie => movie._id === movieId);
+  }
+
 }
