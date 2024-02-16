@@ -1,39 +1,57 @@
 <app-navbar></app-navbar>
 
 <div *ngIf="user" class="user-profile">
-  <!-- User Information section -->
-  <div class="profile-section">
-    <h2>User Information</h2>
-    <div *ngIf="!isEditing">
-      <p><strong>Username:</strong> {{ user.Username }}</p>
-      <p><strong>Email:</strong> {{ user.Email }}</p>
-      <p><strong>Birthday:</strong> {{ user.Birthday | date }}</p>
-      <button mat-raised-button color="primary" (click)="toggleEdit()">Edit</button>
-    </div>
-    <div *ngIf="isEditing">
-      <mat-form-field appearance="fill">
-        <mat-label>Username</mat-label>
-        <input matInput [(ngModel)]="updatedUserData.Username" type="text">
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="updatedUserData.Email" type="email">
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Birthday</mat-label>
-        <input matInput [(ngModel)]="updatedUserData.Birthday" type="date">
-      </mat-form-field>
+  <div class="profile-sections-container">
+    <!-- User Information section -->
+    <div class="profile-section user-information">
+      <h2>User Information</h2>
+      <div *ngIf="!isEditing" class="user-section-text">
+        <p><strong>Username:</strong> {{ user.Username }}</p>
+        <p><strong>Email:</strong> {{ user.Email }}</p>
+        <p><strong>Birthday:</strong> {{ user.Birthday | date }}</p>
+      </div>
+      <div *ngIf="isEditing">
+        <mat-form-field appearance="fill">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="updatedUserData.Username" type="text">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput [(ngModel)]="updatedUserData.Email" type="email">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Birthday</mat-label>
+          <input matInput [(ngModel)]="updatedUserData.Birthday" type="date">
+        </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Password</mat-label>
           <input matInput [(ngModel)]="updatedUserData.Password" type="password" placeholder="">
         </mat-form-field>
-      <button mat-raised-button color="primary" (click)="updateUserData()">Save</button>
-      <button mat-raised-button color="warn" (click)="toggleEdit()">Cancel</button>
+        <div class="button-container">
+          <button mat-raised-button color="primary" (click)="updateUserData()">Save</button>
+          <button mat-raised-button color="warn" (click)="toggleEdit()">Cancel</button>
+        </div>
+      </div>
+      <div class="button-container" *ngIf="!isEditing">
+        <button mat-raised-button color="primary" (click)="toggleEdit()">Edit</button>
+      </div>
+    </div>
+    
+    <!-- Delete Account section -->
+    <div class="profile-section delete-account">
+      <h2>Delete Account</h2>
+      <p>Deleting your account is permanent and irreversible. Are you absolutely sure you want to proceed with this action?</p>
+      <div class="button-container">
+        <button mat-raised-button color="warn" (click)="deleteUser()">Delete Account</button>
+      </div>
     </div>
   </div>
+</div>
 
-  <!-- Favorite Movies section -->
-  <div *ngIf="favoriteMovies.length > 0; else noFavorites" class="movie-container">
+<!-- Favorite Movies section -->
+<div *ngIf="favoriteMovies.length > 0; else noFavorites" class="user-profile">
+  <h2>{{ user.Username }}'s Favorite Movies</h2>
+  <div class="movie-container">
     <mat-card *ngFor="let movie of favoriteMovies" class="movie-card">
       <mat-card-header>
         <mat-card-title>{{ movie.Title }}</mat-card-title>
@@ -56,14 +74,7 @@
       </mat-card-actions>
     </mat-card>
   </div>
-  <ng-template #noFavorites>
-    <p>No favorite movies found.</p>
-  </ng-template>
-
-  <!-- Delete Account section -->
-  <div class="profile-section">
-    <h2>Delete Account</h2>
-    <p>Deleting your account is permanent. Are you sure you want to proceed?</p>
-    <button mat-raised-button color="warn" (click)="deleteUser()">Delete Account</button>
-  </div>
 </div>
+<ng-template #noFavorites>
+  <p>No favorite movies found.</p>
+</ng-template>
