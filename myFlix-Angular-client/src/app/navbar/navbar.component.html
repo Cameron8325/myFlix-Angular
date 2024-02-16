@@ -1,9 +1,19 @@
-<!DOCTYPE html>
 <mat-toolbar color="primary">
   <span>myFlix</span>
   <span class="spacer"></span>
-  <button mat-button routerLink="/movies">Movies</button>
-  <button mat-button routerLink="/profile">Profile</button>
-  <button mat-button (click)="logOff()">Log Off</button>
+  
+  <!-- Hamburger menu for small screens -->
+  <button mat-icon-button *ngIf="isSmallScreen" [matMenuTriggerFor]="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/movies">Movies</button>
+    <button mat-menu-item routerLink="/profile">Profile</button>
+    <button mat-menu-item (click)="logOff()">Log Off</button>
+  </mat-menu>
+  
+  <!-- Buttons for larger screens -->
+  <button mat-button *ngIf="!isSmallScreen" routerLink="/movies">Movies</button>
+  <button mat-button *ngIf="!isSmallScreen" routerLink="/profile">Profile</button>
+  <button mat-button *ngIf="!isSmallScreen" (click)="logOff()">Log Off</button>
 </mat-toolbar>
-

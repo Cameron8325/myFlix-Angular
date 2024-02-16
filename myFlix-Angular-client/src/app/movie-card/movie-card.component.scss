@@ -2,14 +2,26 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-}
 
-.movie-card {
-  width: 300px;
-  margin: 10px;
-}
+  .movie-card {
+    width: 300px;
+    margin: 10px;
 
-.movie-image {
-  width: 100%;
-  height: auto;
+    .movie-image {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    mat-card-header {
+      justify-content: center;
+      margin-bottom: 10px;
+      font-size: 1.25rem;
+    }
+
+    mat-card-actions {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
 }
