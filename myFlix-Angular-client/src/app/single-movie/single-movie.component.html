@@ -18,6 +18,9 @@
   <button mat-icon-button (click)="goToPreviousMovie()">
     <mat-icon>keyboard_arrow_left</mat-icon>
   </button>
+  <button mat-button color="primary" (click)="addToFavorites()">
+    <mat-icon>{{ isFavorite() ? 'favorite' : 'favorite_border' }}</mat-icon>
+  </button>
   <button mat-icon-button (click)="goToNextMovie()">
     <mat-icon>keyboard_arrow_right</mat-icon>
   </button>
