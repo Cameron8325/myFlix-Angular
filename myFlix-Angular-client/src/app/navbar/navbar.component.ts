@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 export class NavbarComponent implements OnDestroy {
   isSmallScreen: boolean = false;
   private breakpointSubscription: Subscription;
+  isLoggedIn: boolean = false; // Flag to indicate user authentication status
 
   constructor(
     public router: Router,
@@ -24,6 +25,9 @@ export class NavbarComponent implements OnDestroy {
     ]).subscribe(result => {
       this.isSmallScreen = result.matches;
     });
+    
+    // Check if user is logged in
+    this.isLoggedIn = !!localStorage.getItem('token');
   }
 
   ngOnDestroy(): void {
@@ -37,5 +41,7 @@ export class NavbarComponent implements OnDestroy {
     this.snackBar.open('You have been successfully logged out.', 'OK', {
       duration: 2000
     });
+    // Update authentication status
+    this.isLoggedIn = false;
   }
 }

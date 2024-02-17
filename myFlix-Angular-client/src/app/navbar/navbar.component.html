@@ -3,7 +3,7 @@
   <span class="spacer"></span>
   
   <!-- Hamburger menu for small screens -->
-  <button mat-icon-button *ngIf="isSmallScreen" [matMenuTriggerFor]="menu">
+  <button mat-icon-button *ngIf="isSmallScreen && isLoggedIn" [matMenuTriggerFor]="menu">
     <mat-icon>menu</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
@@ -13,7 +13,7 @@
   </mat-menu>
   
   <!-- Buttons for larger screens -->
-  <button mat-button *ngIf="!isSmallScreen" routerLink="/movies">Movies</button>
-  <button mat-button *ngIf="!isSmallScreen" routerLink="/profile">Profile</button>
-  <button mat-button *ngIf="!isSmallScreen" (click)="logOff()">Log Off</button>
+  <button mat-button *ngIf="!isSmallScreen && isLoggedIn" routerLink="/movies">Movies</button>
+  <button mat-button *ngIf="!isSmallScreen && isLoggedIn" routerLink="/profile">Profile</button>
+  <button mat-button *ngIf="!isSmallScreen && isLoggedIn" (click)="logOff()">Log Off</button>
 </mat-toolbar>

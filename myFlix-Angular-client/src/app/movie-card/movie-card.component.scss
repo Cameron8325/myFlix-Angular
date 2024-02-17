@@ -11,17 +11,24 @@
       width: 100%;
       height: auto;
       object-fit: cover;
+      cursor: pointer;
     }
 
     mat-card-header {
       justify-content: center;
       margin-bottom: 10px;
       font-size: 1.25rem;
+      cursor: pointer;
     }
 
     mat-card-actions {
       display: flex;
       justify-content: space-between;
     }
+    
+    mat-card-title:hover {
+      text-decoration: underline; /* Add underline on hover */
+    }
   }
 }
+

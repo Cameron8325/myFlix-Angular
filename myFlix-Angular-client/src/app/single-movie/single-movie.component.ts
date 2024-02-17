@@ -54,18 +54,25 @@ export class SingleMovieComponent implements OnInit {
   }
 
   goToNextMovie(): void {
-    const currentIndex = this.allMovies.findIndex(movie => movie._id === this.movieId);
-    const nextIndex = (currentIndex + 1) % this.allMovies.length; // Circular navigation
-    const nextMovieId = this.allMovies[nextIndex]._id;
+    const currentIndex = this.allMovies.findIndex(movie => movie.Title === this.movieId);
+    let nextIndex = currentIndex + 1;
+    if (nextIndex >= this.allMovies.length) {
+      nextIndex = 0; // Cycling back to the first movie
+    }
+    const nextMovieId = this.allMovies[nextIndex].Title;
     this.router.navigate(['/movies', nextMovieId]);
   }
 
   goToPreviousMovie(): void {
-    const currentIndex = this.allMovies.findIndex(movie => movie._id === this.movieId);
-    const previousIndex = (currentIndex - 1 + this.allMovies.length) % this.allMovies.length; // Circular navigation
-    const previousMovieId = this.allMovies[previousIndex]._id;
+    const currentIndex = this.allMovies.findIndex(movie => movie.Title === this.movieId);
+    let previousIndex = currentIndex - 1;
+    if (previousIndex < 0) {
+      previousIndex = this.allMovies.length - 1; // Cycling back to the last movie
+    }
+    const previousMovieId = this.allMovies[previousIndex].Title;
     this.router.navigate(['/movies', previousMovieId]);
   }
+  
 
   addToFavorites(): void {
     const index = this.loggedInUser.FavoriteMovies.findIndex((favMovie: any) => favMovie === this.movieData._id);
@@ -89,4 +96,5 @@ export class SingleMovieComponent implements OnInit {
   isFavorite(): boolean {
     return this.loggedInUser.FavoriteMovies.includes(this.movieData._id);
   }
+  
 }

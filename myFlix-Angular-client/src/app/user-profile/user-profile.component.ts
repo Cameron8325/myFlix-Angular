@@ -205,4 +205,8 @@ export class UserProfileComponent implements OnInit {
     return this.favoriteMovies.some(movie => movie._id === movieId);
   }
 
+  redirectToMovieDetails(movieTitle: string): void {
+    this.router.navigate(['/movies', movieTitle]);
+  }    
+
 }

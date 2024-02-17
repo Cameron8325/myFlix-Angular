@@ -37,22 +37,6 @@ $myFlix-Angular-client-theme: mat.define-light-theme((
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.movie-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.movie-card {
-  width: 300px;
-  margin-bottom: 20px;
-}
-
-.movie-image {
-  width: 100%;
-  height: auto;
-}
-
 // Typography
 body {
   font-size: 16px;

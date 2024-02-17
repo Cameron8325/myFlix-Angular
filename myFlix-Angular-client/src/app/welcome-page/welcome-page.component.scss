@@ -3,29 +3,30 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Adjust the height according to your layout */
+  height: 75vh;
 
   h1 {
-    font-size: 24px;
+    font-size: 36px;
     margin-bottom: 20px;
-    color: #333; /* Example color */
+    color: #333;
+    text-align: center; // Center align the text
   }
 
   button {
     margin-bottom: 10px;
-    width: 200px;
-    height: 40px;
-    font-size: 16px;
-    border-radius: 4px;
+    width: 220px; // Reduce button width for better alignment
+    height: 50px; // Increase button height for better visibility
+    font-size: 18px;
+    border-radius: 25px; // Round button corners
     cursor: pointer;
 
     &:first-child {
-      margin-right: 0; /* Remove margin from the first button */
+      margin-right: 0;
     }
 
     &[color="primary"] {
-      background-color: #007bff; /* Example primary color */
-      color: #fff; /* Example text color */
+      background-color: #607d8b;
+      color: #fff;
     }
   }
 }
