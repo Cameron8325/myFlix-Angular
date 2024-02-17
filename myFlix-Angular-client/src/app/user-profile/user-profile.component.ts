@@ -107,11 +107,15 @@ export class UserProfileComponent implements OnInit {
   }
 
   deleteUser(): void {
+    // Step 1: Navigate to the welcome page
+    this.router.navigate(['/welcome']);
+    
+    // Step 2: Delete the account from the database
     const username = this.user.Username;
     this.fetchApiData.deleteUser(username).subscribe(
       () => {
         localStorage.clear();
-        this.router.navigate(['/welcome']);
+        console.log('Account deleted successfully');
         this.snackBar.open('Account deleted successfully', 'OK', {
           duration: 2000
         });

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 
@@ -110,8 +111,15 @@ export class FetchApiDataService {
     );
   }
 
-
   private handleError(error: HttpErrorResponse): any {
+    if (error.error && error.error.text && error.error.text.includes('deleted')) {
+      // This is not an error, it's a success message
+      console.log('Success:', error.error.text);
+      // Return an empty observable to prevent the error
+      return EMPTY;
+    }
+  
+    // Handle other errors as usual
     if (error.error instanceof ErrorEvent) {
       console.error('Some error occurred:', error.error.message);
     } else {

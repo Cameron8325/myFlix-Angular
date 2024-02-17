@@ -33,7 +33,7 @@ export class UserLoginFormComponent implements OnInit {
       });
       this.router.navigate(['movies']);
     }, (result) => {
-      this.snackBar.open(result, 'OK', {
+      this.snackBar.open('Invalid Username or Password', 'OK', {
         duration: 2000
       });
     });
