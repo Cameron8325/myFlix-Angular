@@ -26,11 +26,13 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { GenreDialogComponent } from './genre-dialog/genre-dialog.component';
 import { DirectorDialogComponent } from './director-dialog/director-dialog.component';
 import { SynopsisDialogComponent } from './synopsis-dialog/synopsis-dialog.component';
-import { NavbarComponent } from './navbar/navbar.component'
+import { NavbarComponent } from './navbar/navbar.component';
+import { SingleMovieComponent } from './single-movie/single-movie.component'
 
 const appRoutes: Routes = [
   { path: 'welcome', component: WelcomePageComponent },
   { path: 'movies', component: MovieCardComponent },
+  { path: 'movies/:id', component: SingleMovieComponent },
   { path: 'profile', component: UserProfileComponent },
   { path: '', redirectTo: 'welcome', pathMatch: 'prefix' },
 ];
@@ -46,7 +48,8 @@ const appRoutes: Routes = [
     GenreDialogComponent,
     DirectorDialogComponent,
     SynopsisDialogComponent,
-    NavbarComponent
+    NavbarComponent,
+    SingleMovieComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

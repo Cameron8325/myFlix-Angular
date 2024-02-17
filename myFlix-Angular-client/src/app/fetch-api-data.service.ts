@@ -33,8 +33,10 @@ export class FetchApiDataService {
   }
 
   // Get one movie endpoint
-  public getMovie(title: string): Observable<any> {
-    return this.http.get(apiUrl + 'movies/' + title).pipe(
+  public getMovieDetails(title: string): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(apiUrl + 'movies/' + title, { headers }).pipe(
       catchError(this.handleError)
     );
   }

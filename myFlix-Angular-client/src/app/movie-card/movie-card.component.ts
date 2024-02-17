@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FetchApiDataService } from '../fetch-api-data.service';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { GenreDialogComponent } from '../genre-dialog/genre-dialog.component';
 import { DirectorDialogComponent } from '../director-dialog/director-dialog.component';
@@ -16,7 +17,8 @@ export class MovieCardComponent implements OnInit {
 
   constructor(
     private fetchApiData: FetchApiDataService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -82,5 +84,8 @@ export class MovieCardComponent implements OnInit {
     return this.loggedInUser.FavoriteMovies.includes(movieId);
   }
   
-  
+  redirectToMovieDetails(movieId: string): void {
+    this.router.navigate(['/movies', movieId]); // Updated navigation path
+  }
 }
+  

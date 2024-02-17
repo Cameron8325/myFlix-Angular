@@ -1,0 +1,24 @@
+<app-navbar></app-navbar>
+<div *ngIf="movieData" class="movie-container">
+  <div class="image-container">
+    <img [src]="movieData.ImageUrl" [alt]="movieData.Title" class="movie-image" />
+  </div>
+  <div class="info-container">
+    <h2>{{ movieData.Title }}</h2>
+    <p><strong>Synopsis:</strong><p>{{ movieData.Description }}</p>
+    <p><strong>Genre:</strong> {{ movieData.Genre?.Name }}</p><p>{{ movieData.Genre?.Description }}</p>
+    <p><strong>Director:</strong> {{ movieData.Director?.Name }}</p><p> {{ movieData.Director?.Description }}</p>
+    <p><strong>Rated </strong> {{ movieData.Rating }}</p>
+    <p><strong>Release Year:</strong> {{ movieData.ReleaseYear }}</p>
+    <p><strong>Starring:</strong> {{ movieData.Starring.join(', ') }}</p>
+    
+  </div>
+</div>
+<div class="navigation-buttons">
+  <button mat-icon-button (click)="goToPreviousMovie()">
+    <mat-icon>keyboard_arrow_left</mat-icon>
+  </button>
+  <button mat-icon-button (click)="goToNextMovie()">
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </button>
+</div>
