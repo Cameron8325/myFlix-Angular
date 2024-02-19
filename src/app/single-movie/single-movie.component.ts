@@ -94,7 +94,7 @@ export class SingleMovieComponent implements OnInit {
   }
 
   isFavorite(): boolean {
-    return this.loggedInUser.FavoriteMovies.includes(this.movieData._id);
+    return this.movieData && this.loggedInUser.FavoriteMovies.includes(this.movieData._id);
   }
   
 }

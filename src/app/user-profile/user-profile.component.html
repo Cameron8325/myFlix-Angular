@@ -49,7 +49,7 @@
 </div>
 
 <!-- Favorite Movies section -->
-<div *ngIf="favoriteMovies.length > 0; else noFavorites" class="user-profile">
+<div *ngIf="user && favoriteMovies.length > 0; else noFavorites" class="user-profile">
   <h2>{{ user.Username }}'s Favorite Movies</h2>
   <div class="movie-container">
     <mat-card *ngFor="let movie of favoriteMovies" class="movie-card">
@@ -75,6 +75,7 @@
     </mat-card>
   </div>
 </div>
+
 <ng-template #noFavorites>
   <p>No favorite movies found.</p>
 </ng-template>
