@@ -1,3 +1,8 @@
+/**
+ * Component representing the single movie details page.
+ * @remarks
+ * This component displays details of a single movie and provides navigation between movies.
+ */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FetchApiDataService } from '../fetch-api-data.service';
@@ -8,18 +13,47 @@ import { FetchApiDataService } from '../fetch-api-data.service';
   styleUrls: ['./single-movie.component.scss']
 })
 export class SingleMovieComponent implements OnInit {
+  /**
+   * The ID of the movie to display details for.
+   */
   movieId!: string;
+  
+  /**
+   * Contains details of the movie.
+   */
   movieData: any;
+  
+  /**
+   * Error message to display if movie details cannot be retrieved.
+   */
   errorMessage: string = '';
+  
+  /**
+   * Information of the logged-in user.
+   */
   loggedInUser: any;
+  
+  /**
+   * Array containing details of all movies.
+   */
   allMovies: any[] = [];
 
+  /**
+   * Constructs a new instance of SingleMovieComponent.
+   * @param route - Provides access to the route parameters.
+   * @param router - Angular router for navigation.
+   * @param fetchApiData - Service for fetching API data.
+   */
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fetchApiData: FetchApiDataService
   ) { }
 
+  /**
+   * Lifecycle hook called after component initialization.
+   * Retrieves movie details and all movies upon component initialization.
+   */
   ngOnInit(): void {
     this.loggedInUser = JSON.parse(localStorage.getItem('user') || '{}');
     this.route.params.subscribe(params => {
@@ -29,6 +63,10 @@ export class SingleMovieComponent implements OnInit {
     });
   }
 
+  /**
+   * Retrieves details of a specific movie.
+   * @param movieId - The ID of the movie to retrieve details for.
+   */
   getMovieDetails(movieId: string): void {
     this.fetchApiData.getMovieDetails(movieId).subscribe(
       (resp: any) => {
@@ -42,6 +80,9 @@ export class SingleMovieComponent implements OnInit {
     );
   }
 
+  /**
+   * Retrieves details of all movies.
+   */
   fetchAllMovies(): void {
     this.fetchApiData.getAllMovies().subscribe(
       (resp: any) => {
@@ -53,6 +94,9 @@ export class SingleMovieComponent implements OnInit {
     );
   }
 
+  /**
+   * Navigates to the next movie.
+   */
   goToNextMovie(): void {
     const currentIndex = this.allMovies.findIndex(movie => movie.Title === this.movieId);
     let nextIndex = currentIndex + 1;
@@ -63,6 +107,9 @@ export class SingleMovieComponent implements OnInit {
     this.router.navigate(['/movies', nextMovieId]);
   }
 
+  /**
+   * Navigates to the previous movie.
+   */
   goToPreviousMovie(): void {
     const currentIndex = this.allMovies.findIndex(movie => movie.Title === this.movieId);
     let previousIndex = currentIndex - 1;
@@ -72,8 +119,10 @@ export class SingleMovieComponent implements OnInit {
     const previousMovieId = this.allMovies[previousIndex].Title;
     this.router.navigate(['/movies', previousMovieId]);
   }
-  
 
+  /**
+   * Adds the movie to the user's favorites or removes it if already present.
+   */
   addToFavorites(): void {
     const index = this.loggedInUser.FavoriteMovies.findIndex((favMovie: any) => favMovie === this.movieData._id);
     if (index === -1) {
@@ -93,6 +142,10 @@ export class SingleMovieComponent implements OnInit {
     }
   }
 
+  /**
+   * Checks if the movie is in the user's favorites.
+   * @returns True if the movie is in favorites, otherwise false.
+   */
   isFavorite(): boolean {
     return this.movieData && this.loggedInUser.FavoriteMovies.includes(this.movieData._id);
   }

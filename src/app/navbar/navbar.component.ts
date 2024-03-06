@@ -1,3 +1,8 @@
+/**
+ * Component representing the navigation bar.
+ * @remarks
+ * This component handles navigation and displays the navigation bar.
+ */
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,10 +15,27 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnDestroy {
+  /**
+   * Indicates whether the screen size is small or not.
+   */
   isSmallScreen: boolean = false;
-  private breakpointSubscription: Subscription;
-  isLoggedIn: boolean = false; // Flag to indicate user authentication status
 
+  /**
+   * Subscription to observe breakpoints for screen size changes.
+   */
+  private breakpointSubscription: Subscription;
+
+  /**
+   * Flag indicating user authentication status.
+   */
+  isLoggedIn: boolean = false;
+
+  /**
+   * Constructs a new instance of NavbarComponent.
+   * @param router - Angular router for navigation.
+   * @param snackBar - Material snackbar for displaying notifications.
+   * @param breakpointObserver - Observes breakpoints for screen size changes.
+   */
   constructor(
     public router: Router,
     public snackBar: MatSnackBar,
@@ -30,10 +52,19 @@ export class NavbarComponent implements OnDestroy {
     this.isLoggedIn = !!localStorage.getItem('token');
   }
 
+  /**
+   * Lifecycle hook called before the component is destroyed.
+   * Unsubscribes from the breakpoint subscription.
+   */
   ngOnDestroy(): void {
     this.breakpointSubscription.unsubscribe();
   }
 
+  /**
+   * Logs the user out.
+   * Clears user data and token from local storage, navigates to the welcome page,
+   * displays a logout message, and updates the authentication status.
+   */
   logOff(): void {
     localStorage.setItem('user', '');
     localStorage.setItem('token', '');

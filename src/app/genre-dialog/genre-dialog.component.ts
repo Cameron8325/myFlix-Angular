@@ -1,3 +1,8 @@
+/**
+ * Component representing the genre dialog.
+ * @remarks
+ * This component displays the details of a movie genre in a dialog.
+ */
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -7,6 +12,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./genre-dialog.component.scss']
 })
 export class GenreDialogComponent {
+  /**
+   * Constructs a new instance of GenreDialogComponent.
+   * @param data - Data containing the genre name and description.
+   */
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: {

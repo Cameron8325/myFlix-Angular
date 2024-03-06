@@ -1,3 +1,9 @@
+/**
+ * Component representing the user profile page.
+ * @remarks
+ * This component manages user profile data, allows updating user information, deleting the user account,
+ * and provides functionality related to favorite movies.
+ */
 import { Component, OnInit } from '@angular/core';
 import { FetchApiDataService } from '../fetch-api-data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -8,21 +14,49 @@ import { GenreDialogComponent } from '../genre-dialog/genre-dialog.component';
 import { DirectorDialogComponent } from '../director-dialog/director-dialog.component';
 import { SynopsisDialogComponent } from '../synopsis-dialog/synopsis-dialog.component';
 
-
-
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
+  /**
+   * User data.
+   */
   user: any;
+  
+  /**
+   * Updated user data.
+   */
   updatedUserData: any = {};
+  
+  /**
+   * Array of favorite movies.
+   */
   favoriteMovies: any[] = [];
+  
+  /**
+   * New password.
+   */
   newPassword: string = '';
+  
+  /**
+   * Confirm password.
+   */
   confirmPassword: string = '';
+  
+  /**
+   * Flag indicating whether user is in editing mode.
+   */
   isEditing: boolean = false;
 
+  /**
+   * Constructs a new instance of UserProfileComponent.
+   * @param fetchApiData - Service for fetching API data.
+   * @param snackBar - Material snackbar for displaying notifications.
+   * @param router - Angular router for navigation.
+   * @param dialog - Material dialog for displaying dialogs.
+   */
   constructor(
     private fetchApiData: FetchApiDataService,
     private snackBar: MatSnackBar,
@@ -30,11 +64,18 @@ export class UserProfileComponent implements OnInit {
     public dialog: MatDialog
   ) { }
 
+  /**
+   * Lifecycle hook called after component initialization.
+   * Retrieves user data and favorite movies on initialization.
+   */
   ngOnInit(): void {
     this.getUserData();
     this.getFavoriteMovies();
   }
 
+  /**
+   * Retrieves user data from the API.
+   */
   getUserData(): void {
     const username = JSON.parse(localStorage.getItem('user') || '{}').Username;
     this.fetchApiData.getUser(username).subscribe(
@@ -51,6 +92,9 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  /**
+   * Retrieves favorite movies for the user from the API.
+   */
   getFavoriteMovies(): void {
     const username = JSON.parse(localStorage.getItem('user') || '{}').Username;
     this.fetchApiData.getFavoriteMovies(username).subscribe(
@@ -66,6 +110,9 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  /**
+   * Updates user data by making a call to the API.
+   */
   updateUserData(): void {
     // Create an object to hold the updated user data
     const updatedData: any = {};
@@ -106,6 +153,10 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  /**
+   * Deletes the user account.
+   * Navigates to the welcome page upon successful deletion.
+   */
   deleteUser(): void {
     // Step 1: Navigate to the welcome page
     this.router.navigate(['/welcome']);
@@ -129,6 +180,10 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  /**
+   * Toggles the edit mode.
+   * If editing starts, clears the password field and formats the birthday for editing.
+   */
   toggleEdit(): void {
     this.isEditing = !this.isEditing;
     if (!this.isEditing) {
@@ -155,6 +210,10 @@ export class UserProfileComponent implements OnInit {
     }
   }
   
+  /**
+   * Adds or removes a movie from favorites.
+   * @param movie - The movie to be added or removed from favorites.
+   */
   addToFavorites(movie: any): void {
     const index = this.favoriteMovies.findIndex((favMovie: any) => favMovie._id === movie._id);
     if (index === -1) {
@@ -181,6 +240,10 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+  /**
+   * Opens a dialog to display genre information.
+   * @param genreData - Data related to the genre to be displayed in the dialog.
+   */
   openGenreDialog(genreData: any): void {
     this.dialog.open(GenreDialogComponent, {
       width: '300px',
@@ -188,6 +251,10 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Opens a dialog to display director information.
+   * @param directorData - Data related to the director to be displayed in the dialog.
+   */
   openDirectorDialog(directorData: any): void {
     this.dialog.open(DirectorDialogComponent, {
       width: '300px',
@@ -195,6 +262,10 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Opens a dialog to display movie synopsis.
+   * @param movieData - Data related to the movie to be displayed in the dialog.
+   */
   openSynopsisDialog(movieData: any): void {
     this.dialog.open(SynopsisDialogComponent, {
       width: '400px',
@@ -205,12 +276,20 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Checks if a movie is in the list of favorite movies.
+   * @param movieId - The ID of the movie to check.
+   * @returns True if the movie is in the list of favorite movies, otherwise false.
+   */
   isFavorite(movieId: string): boolean {
     return this.favoriteMovies.some(movie => movie._id === movieId);
   }
 
+  /**
+   * Redirects to the details page of a movie.
+   * @param movieTitle - The title of the movie to navigate to its details page.
+   */
   redirectToMovieDetails(movieTitle: string): void {
     this.router.navigate(['/movies', movieTitle]);
-  }    
-
+  }
 }
